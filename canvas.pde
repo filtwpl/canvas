@@ -1,69 +1,49 @@
-public Button[] buttons;
+public Button[] colors;
+public Button eraser;
 public int currentR = 0;
 public int currentG = 0;
 public int currentB = 0;
+public int currentW = 3;
 
 void setup() {
   size(1300, 900);
   background(255);
   showSidebar();
-  buttons = new Button[10];
-  addButtons();
-  showButtons();
+  colors = new Button[9];
+  addColors();
+  showColors();
 }
 
 void draw() {
-
-
   if (mousePressed && mouseX>50 && pmouseX>50) {
     stroke(currentR, currentG, currentB);
-    strokeWeight(3);
+    strokeWeight(currentW);
     line(mouseX, mouseY, pmouseX, pmouseY);
   }
   if (mousePressed && mouseX>10 && mouseX<40){
-    for (int i=0; i<3; i++) {
-      Button now = buttons[i];
+    for (int i=0; i<colors.length; i++) {
+      Button now = colors[i];
       if (mouseY>now.getPos() && mouseY<now.getPos()+60) {
         currentR = now.getR();
         currentG = now.getG();
         currentB = now.getB();
+        currentW = now.getW();
       }
     }
   }
-
-  // if (mouseY>buttons[0].getPos() && mouseY<buttons[0].getPos()+60) {
-  //   currentR = buttons[0].getR();
-  //   currentG = buttons[0].getG();
-  //   currentB = buttons[0].getB();
-  // }
-
-
-  // Button now = buttons[0];
-  // currentR = now.getR();
-  // currentG = now.getG();
-  // currentB = now.getB();
-
-
 }
 
 
 public class Button {
-  private int myIndex, myR, myG, myB, myPos;
+  private int myIndex, myR, myG, myB, myW, myPos;
 
-  public Button(int index, int r, int g, int b) {
+  public Button(int index, int r, int g, int b, int w) {
     myIndex = index;
     myR = r;
     myG = g;
     myB = b;
-    myPos = 60*(myIndex+2);
-  }
-
-
-  public void mousePressed() {
-    currentR = myR;
-    currentG = myG;
-    currentB = myB;
-
+    myW = w;
+    myPos = 60*(myIndex+1);
   }
 
   public void show() {
@@ -76,7 +56,7 @@ public class Button {
   public int getR() {return myR;}
   public int getG() {return myG;}
   public int getB() {return myB;}
-
+  public int getW() {return myW;}
 }
 
 public void showSidebar() {
@@ -85,14 +65,20 @@ public void showSidebar() {
   rect(0, 30, 50, 840, 0, 6, 6, 0);
 }
 
-public void addButtons() {
-  buttons[0] = new Button(0, 255, 0, 0);
-  buttons[1] = new Button(1, 0, 255, 0);
-  buttons[2] = new Button(2, 0, 0, 255);
+public void addColors() {
+  colors[0] = new Button(0, 255, 0, 0, 3);
+  colors[1] = new Button(1, 255, 140, 0, 3);
+  colors[2] = new Button(2, 255, 255, 0, 3);
+  colors[3] = new Button(3, 0, 128, 0, 3);
+  colors[4] = new Button(4, 0, 0, 255, 3);
+  colors[5] = new Button(5, 75, 0, 130, 3);
+  colors[6] = new Button(6, 238, 130, 238, 3);
+  colors[7] = new Button(7, 0, 0, 0, 3);
+  colors[8] = new Button(8, 255, 255, 255, 8);
 }
 
-public void showButtons() {
-  for (int i=0; i<3; i++) {
-    buttons[i].show();
+public void showColors() {
+  for (int i=0; i<9; i++) {
+    colors[i].show();
   }
 }
