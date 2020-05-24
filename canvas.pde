@@ -1,4 +1,5 @@
 
+PImage rainbow;
 public Button[] colors;
 public Slider thicc;
 public Button clear;
@@ -6,60 +7,32 @@ public int currentR = 0;
 public int currentG = 0;
 public int currentB = 0;
 public int currentW = 3;
+public int shapeMode = 0;
 
 void setup() {
   size(1300, 900);
   background(255);
   showSidebar();
   showBottombar();
-  rectangle();
-  colors = new Button[9];
-  addColors();
-  showColors();
-  thicc = new Slider(10, 600, 30, 150);
-  clear = new Button(12, 40, 40, 40);
-  clear.show();
 }
 
 void draw() {
   thicc.show();
-  if (mousePressed && mouseX>50 && mouseY<850) {
-    stroke(currentR, currentG, currentB);
-    strokeWeight(currentW);
-    line(mouseX, mouseY, pmouseX, pmouseY);
-    //triangle(mouseX, mouseY, mouseX+5, mouseY+5, mouseX+10, mouseY);
-    //rect(mouseX, mouseY, 10, 10);
-  }
-  if (mousePressed && mouseX>10 && mouseX<40){
-    for (int i=0; i<colors.length; i++) {
-      Button now = colors[i];
-      if (mouseY>now.getPos() && mouseY<now.getPos()+50) {
-        currentR = now.getR();
-        currentG = now.getG();
-        currentB = now.getB();
-      }
-    }
-  }
-  if (mousePressed && mouseX<50) {
-    if (mouseY>thicc.getY() && mouseY<thicc.getY()+thicc.getHeight()-thicc.getWidth()) {
-      thicc.setValY(mouseY);
-      int sliderValue = thicc.getValY();
-      int newSliderValue = (int) map(sliderValue, thicc.getY(), thicc.getY()+thicc.getHeight()-thicc.getWidth(), 3, 40);
-      currentW = newSliderValue;
-    }
-  }
-  if (mousePressed && mouseX>10 && mouseX<40 && mouseY>clear.getPos() && mouseY<clear.getPos()+50) {
-    noStroke();
-    fill(255);
-    rect(50, 0, 1290, 900);
-  }
-
-  if (mousePressed && mouseX>160 && mouseX<220 && mouseY>860 && mouseY<890) {
-    noStroke();
-    fill(0);
-    rect(450, 600, 50, 50, 6, 6, 6, 6);
-  }
-
+  textSize(20);
+  fill(125, 142, 209);
+  text("made for planet hacks 2020 by jm with processing <3", 420, 882);
+  //checking shapeModes and drawing
+  pen();
+  //checking color switches
+  palette();
+  //checking brush size changes
+  brushSize();
+  //checking brush type changes
+  brushType();
+  //randomizer
+  randomColor();
+  //clear button
+  checkClear();
 }
 
 public class Button {
@@ -117,12 +90,23 @@ public void showSidebar() {
   stroke(255);
   fill(200);
   rect(0, 30, 50, 840, 0, 6, 6, 0);
+  colors = new Button[9];
+  addColors();
+  showColors();
+  thicc = new Slider(10, 600, 30, 150);
+  clear = new Button(12, 40, 40, 40);
+  clear.show();
 }
 
 public void showBottombar() {
   stroke(255);
   fill(200);
   rect(75, 850, 1150, 50, 6, 6, 0, 0);
+  rectangle();
+  tri();
+  star();
+  point();
+  rainbow = loadImage("rainbow.png");
 }
 
 public void addColors() {
@@ -146,5 +130,109 @@ public void showColors() {
 public void rectangle() {
   noStroke();
   fill(75);
-  rect(100, 860, 60, 30, 6, 6, 6, 6);
+  rect(100, 860, 60, 30);
+}
+
+public void tri() {
+  noStroke();
+  fill(75);
+  triangle(171, 889, 200, 859, 229, 889);
+}
+
+public void star() {
+  noStroke();
+  fill(75);
+  beginShape();
+  for (float i = 0; i < TWO_PI; i += TWO_PI/5) {
+    float x = 270 + cos(i) * 20;
+    float y = 875 + sin(i) * 20;
+    vertex(x, y);
+    x = 270 + cos(i+TWO_PI/5/2.0) * 10;
+    y = 875 + sin(i+TWO_PI/5/2.0) * 10;
+    vertex(x, y);
+  }
+  endShape(CLOSE);
+}
+
+public void point() {
+  noStroke();
+  fill(75);
+  circle(330, 875, 33);
+}
+
+public void pen() {
+  if (mousePressed && mouseX>50 && mouseY<840) {
+    stroke(currentR, currentG, currentB);
+    fill(currentR, currentG, currentB);
+    strokeWeight(currentW);
+    if (shapeMode == 0) {
+      line(mouseX, mouseY, pmouseX, pmouseY);
+    } else if (shapeMode == 1) {
+      rect(mouseX, mouseY, 45, 30);
+    } else if (shapeMode == 2) {
+      triangle(mouseX, mouseY, mouseX+15, mouseY-30, mouseX+30, mouseY);
+    } else if (shapeMode == 3) {
+      beginShape();
+      for (float i = 0; i < TWO_PI; i += TWO_PI/5) {
+        float x = mouseX + cos(i) * 22;
+        float y = mouseY + sin(i) * 22;
+        vertex(x, y);
+        x = mouseX + cos(i+TWO_PI/5/2.0) * 10;
+        y = mouseY + sin(i+TWO_PI/5/2.0) * 10;
+        vertex(x, y);
+      }
+      endShape(CLOSE);
+    }
+  }
+}
+
+public void palette() {
+  if (mousePressed && mouseX>10 && mouseX<40){
+    for (int i=0; i<colors.length; i++) {
+      Button now = colors[i];
+      if (mouseY>now.getPos() && mouseY<now.getPos()+50) {
+        currentR = now.getR();
+        currentG = now.getG();
+        currentB = now.getB();
+      }
+    }
+  }
+}
+
+public void brushSize() {
+  if (mousePressed && mouseX<50) {
+    if (mouseY>thicc.getY() && mouseY<thicc.getY()+thicc.getHeight()-thicc.getWidth()) {
+      thicc.setValY(mouseY);
+      int sliderValue = thicc.getValY();
+      int newSliderValue = (int) map(sliderValue, thicc.getY(), thicc.getY()+thicc.getHeight()-thicc.getWidth(), 3, 50);
+      currentW = newSliderValue;
+    }
+  }
+}
+
+public void brushType() {
+  if (mousePressed && mouseY>860 && mouseY<890) {
+    if (mouseX<160 && mouseX>100) shapeMode = 1;
+    else if (mouseX>170 && mouseX<230) shapeMode = 2;
+    else if (mouseX>240 && mouseX<300) shapeMode = 3;
+    else if (mouseX>310 && mouseX<370) shapeMode = 0;
+  }
+}
+
+//i do it for the girls and the gays, that's it.
+public void randomColor() {
+  image(rainbow, 1050, 857, 75, 40);
+  if (mousePressed && mouseX>1050 && mouseX<1120 && mouseY>857 && mouseY<897){
+    currentR = 255-(int)(Math.random()*255);
+    currentG = 255-(int)(Math.random()*255);
+    currentB = 255-(int)(Math.random()*255);
+  }
+}
+
+public void checkClear() {
+  if (mousePressed && mouseX>10 && mouseX<40 && mouseY>clear.getPos() && mouseY<clear.getPos()+50) {
+    noStroke();
+    fill(255);
+    rect(50, 0, 1290, 851);
+  }
 }
