@@ -40,7 +40,7 @@ void draw() {
     if (mouseY>thicc.getY() && mouseY<thicc.getY()+thicc.getHeight()-thicc.getWidth()) {
       thicc.setValY(mouseY);
       int sliderValue = thicc.getValY();
-      int newSliderValue = (int) map(sliderValue, thicc.getY(), thicc.getY()+thicc.getHeight()-thicc.getWidth(), 3, 25);
+      int newSliderValue = (int) map(sliderValue, thicc.getY(), thicc.getY()+thicc.getHeight()-thicc.getWidth(), 3, 40);
       currentW = newSliderValue;
     }
   }
