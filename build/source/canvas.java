@@ -27,6 +27,8 @@ public void setup() {
   
   background(255);
   showSidebar();
+  showBottombar();
+  rectangle();
   colors = new Button[9];
   addColors();
   showColors();
@@ -37,12 +39,14 @@ public void setup() {
 
 public void draw() {
   thicc.show();
-  if (mousePressed && mouseX>50 && pmouseX>50) {
+  if (mousePressed && mouseX>50 && mouseY<850) {
     stroke(currentR, currentG, currentB);
     strokeWeight(currentW);
     line(mouseX, mouseY, pmouseX, pmouseY);
+    //triangle(mouseX, mouseY, mouseX+5, mouseY+5, mouseX+10, mouseY);
+    //rect(mouseX, mouseY, 10, 10);
   }
-  if (mousePressed && mouseX>10 && mouseX<40 && pmouseX>10 && pmouseX<40){
+  if (mousePressed && mouseX>10 && mouseX<40){
     for (int i=0; i<colors.length; i++) {
       Button now = colors[i];
       if (mouseY>now.getPos() && mouseY<now.getPos()+50) {
@@ -56,7 +60,7 @@ public void draw() {
     if (mouseY>thicc.getY() && mouseY<thicc.getY()+thicc.getHeight()-thicc.getWidth()) {
       thicc.setValY(mouseY);
       int sliderValue = thicc.getValY();
-      int newSliderValue = (int) map(sliderValue, thicc.getY(), thicc.getY()+thicc.getHeight()-thicc.getWidth(), 3, 35);
+      int newSliderValue = (int) map(sliderValue, thicc.getY(), thicc.getY()+thicc.getHeight()-thicc.getWidth(), 3, 40);
       currentW = newSliderValue;
     }
   }
@@ -65,6 +69,14 @@ public void draw() {
     fill(255);
     rect(50, 0, 1290, 900);
   }
+
+  if (mousePressed && mouseX>160 && mouseX<220 && mouseY>860 && mouseY<890) {
+    System.out.println(true);
+    noStroke();
+    fill(0);
+    rect(450, 600, 50, 50, 6, 6, 6, 6);
+  }
+
 }
 
 public class Button {
@@ -124,6 +136,12 @@ public void showSidebar() {
   rect(0, 30, 50, 840, 0, 6, 6, 0);
 }
 
+public void showBottombar() {
+  stroke(255);
+  fill(200);
+  rect(75, 850, 1150, 50, 6, 6, 0, 0);
+}
+
 public void addColors() {
   colors[0] = new Button(0, 255, 0, 0);
   colors[1] = new Button(1, 255, 140, 0);
@@ -140,6 +158,12 @@ public void showColors() {
   for (int i=0; i<9; i++) {
     colors[i].show();
   }
+}
+
+public void rectangle() {
+  noStroke();
+  fill(75);
+  rect(100, 860, 60, 30, 6, 6, 6, 6);
 }
   public void settings() {  size(1300, 900); }
   static public void main(String[] passedArgs) {
